@@ -1,8 +1,10 @@
-package kr.lul.spring.examples.data.jpa.mysql.index.compare;
+package kr.lul.spring.examples.data.jpa.mysql.index.compare.runner;
 
+import kr.lul.spring.examples.data.jpa.mysql.index.compare.DataJpaIndexCompareAnchor;
 import kr.lul.spring.examples.data.jpa.mysql.index.compare.service.Case1Service;
 import kr.lul.spring.examples.data.jpa.mysql.index.compare.service.CreateResult;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -12,15 +14,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import java.util.List;
 
 import static java.lang.String.format;
-import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  * @author justburrow
  * @since 2020/05/17
  */
-@SpringBootApplication
+@SpringBootApplication(scanBasePackageClasses = DataJpaIndexCompareAnchor.class)
 public class BenchmarkApplication implements ApplicationRunner {
-  private static final Logger log = getLogger(BenchmarkApplication.class);
+  private static final Logger log = LoggerFactory.getLogger(BenchmarkApplication.class);
 
   public static final String ARG_SIZE = "size";
   public static final String ARG_CHILD_SIZE = "child";

@@ -1,0 +1,6 @@
+dependencies {
+  implementation project(':data-jpa-mysql-index-compare')
+  implementation('kr.lul.common:common-util')
+  implementation('org.springframework.boot:spring-boot-starter-data-jpa')
+  implementation('mysql:mysql-connector-java')
+}
