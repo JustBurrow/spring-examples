@@ -47,8 +47,9 @@ public class BenchmarkApplication implements ApplicationRunner {
     int childSize = (int) longArgument(ARG_CHILD_SIZE, args);
     log.info("#run size={}, childSize={}", size, childSize);
 
-    CreateResult result = this.case1Service.create(size, childSize);
-    log.info("#run result={}", result);
+    List<CreateResult> results = List.of(
+        this.case1Service.create(size, childSize));
+    log.info("#run results={}", results);
   }
 
   public static void main(String[] args) {

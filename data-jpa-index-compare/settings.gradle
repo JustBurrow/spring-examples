@@ -1,4 +1,4 @@
 rootProject.name = 'spring-examples'
 
-include 'data-jpa-mysql-index-compare',
+include 'data-jpa-index-compare-bussiness',
     'data-jpa-index-compare-runner'
