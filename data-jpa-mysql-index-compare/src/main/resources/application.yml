@@ -1,0 +1,16 @@
+spring:
+  pid:
+    file: koblattown-standalone.pid
+  datasource:
+    hikari:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      jdbc-url: jdbc:mysql://localhost:3306/data-jpa-index-compare?connectionCollation=utf8mb4_unicode_ci&allowPublicKeyRetrieval=true&useSSL=false
+      username: root
+      password: ''
+  jpa:
+    open-in-view: false
+    show-sql: false
+
+logging:
+  level:
+    root: info

@@ -277,6 +277,6 @@ fabric.properties
 *.pid
 *.lck
 *.bak_*
-config/
-!config/sample-*
+data-jpa-mysql-index-compare/config/
+!data-jpa-mysql-index-compare/config/sample-*
 log/
