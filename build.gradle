@@ -1,0 +1,83 @@
+buildscript {
+  repositories {
+    jcenter()
+    mavenCentral()
+    mavenLocal()
+  }
+
+  dependencies {
+    classpath "org.springframework.boot:spring-boot-gradle-plugin:2.3.0.RELEASE"
+    classpath "io.spring.gradle:dependency-management-plugin:1.0.9.RELEASE"
+  }
+}
+
+apply plugin: "idea"
+apply plugin: "eclipse"
+
+group "kr.lul.spring.examples"
+version "0.0.1.SNAPSHOT"
+
+allprojects {
+  repositories {
+    jcenter()
+    mavenCentral()
+    mavenLocal()
+    maven {
+      url "https://dl.bintray.com/justburrow/snapshot"
+    }
+    maven {
+      url "https://dl.bintray.com/justburrow/release"
+    }
+  }
+}
+
+subprojects {
+  apply plugin: "java"
+  apply plugin: "java-library"
+  apply plugin: "org.springframework.boot"
+  apply plugin: "io.spring.dependency-management"
+
+  sourceCompatibility = 11
+  targetCompatibility = 11
+
+  configurations {
+    developmentOnly
+    runtimeClasspath {
+      extendsFrom developmentOnly
+    }
+  }
+
+  dependencyManagement {
+    imports {
+      mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
+    }
+
+    dependencies {
+      dependency "kr.lul.common:common-util:0.0.1.SNAPSHOT"
+      dependency "kr.lul.common:common-data:0.0.1.SNAPSHOT"
+      dependency "kr.lul.common:common-web:0.0.1.SNAPSHOT"
+
+      dependency "kr.lul.support.spring:support-spring-common:0.0.1.SNAPSHOT"
+      dependency "kr.lul.support.spring:support-spring-data-jpa:0.0.1.SNAPSHOT"
+      dependency "kr.lul.support.spring:support-spring-mail:0.0.1.SNAPSHOT"
+      dependency "kr.lul.support.spring:support-spring-security:0.0.1.SNAPSHOT"
+      dependency "kr.lul.support.spring:support-spring-web:0.0.1.SNAPSHOT"
+
+      dependency "org.assertj:assertj-core:3.14.0"
+      dependency "org.apache.commons:commons-lang3:3.9"
+    }
+  }
+
+  dependencies {
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+
+    developmentOnly "org.springframework.boot:spring-boot-devtools"
+
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
+    testImplementation "org.assertj:assertj-core"
+    testImplementation "org.apache.commons:commons-lang3"
+  }
+
+  jar.enabled = true
+  bootJar.enabled = false
+}
