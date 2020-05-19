@@ -3,6 +3,8 @@ package kr.lul.spring.examples.data.jpa.mysql.index.compare.service;
 import java.time.Duration;
 import java.time.Instant;
 
+import static java.time.Duration.between;
+
 /**
  * @author justburrow
  * @since 2020/05/17
@@ -37,16 +39,17 @@ public class CreateResult {
   }
 
   public Duration getDuration() {
-    return Duration.between(this.start, this.end);
+    return between(this.start, this.end);
   }
 
   @Override
   public String toString() {
-    return new StringBuilder(CreateResult.class.getSimpleName())
+    return new StringBuilder()
                .append("{caseName='").append(this.caseName).append('\'')
                .append(", size=").append(this.size)
                .append(", start=").append(this.start)
                .append(", end=").append(this.end)
+               .append(", duration=").append(between(this.start, this.end))
                .append('}').toString();
   }
 }

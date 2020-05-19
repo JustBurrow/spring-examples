@@ -1,6 +1,7 @@
 package kr.lul.spring.examples.data.jpa.mysql.index.compare.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
 
@@ -13,6 +14,49 @@ import static java.lang.String.format;
 @Entity(name = "Case1Child")
 @Table(name = "case1_child")
 public class Case1Child {
+  @Embeddable
+  public static class Case1ChildId implements Serializable {
+    @Column(name = "root", nullable = false, updatable = false)
+    private long root;
+    @Column(name = "seq", nullable = false, updatable = false)
+    private int sequence;
+
+    public Case1ChildId() {
+    }
+
+    public Case1ChildId(long root, int sequence) {
+      this.root = root;
+      this.sequence = sequence;
+    }
+
+    public long root() {
+      return this.root;
+    }
+
+    public int sequence() {
+      return this.sequence;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+      if (this == o) return true;
+      if (o == null || getClass() != o.getClass()) return false;
+      Case1ChildId that = (Case1ChildId) o;
+      return this.root == that.root &&
+                 this.sequence == that.sequence;
+    }
+
+    @Override
+    public int hashCode() {
+      return Objects.hash(this.root, this.sequence);
+    }
+
+    @Override
+    public String toString() {
+      return format("(%d, %d)", this.root, this.sequence);
+    }
+  }
+
   @EmbeddedId
   private Case1ChildId id;
   @ManyToOne(targetEntity = Case1Root.class)
