@@ -1,8 +1,11 @@
 package kr.lul.spring.examples.data.jpa.mysql.index.compare.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
+
+import static java.lang.String.format;
 
 /**
  * @author justburrow
@@ -11,11 +14,50 @@ import java.util.Objects;
 @Entity(name = "Case3Child")
 @Table(name = "case3_child")
 public class Case3Child {
+  @Embeddable
+  public static class Case3ChildId implements Serializable {
+    @Column(name = "root", nullable = false, updatable = false)
+    private String root;
+    @Column(name = "seq", nullable = false, updatable = false)
+    private int sequence;
+
+    public Case3ChildId() {
+    }
+
+    public Case3ChildId(String root, int sequence) {
+      this.root = root;
+      this.sequence = sequence;
+    }
+
+    public String root() {
+      return this.root;
+    }
+
+    public int sequence() {
+      return this.sequence;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+      if (this == o) return true;
+      if (o == null || getClass() != o.getClass()) return false;
+      Case3ChildId that = (Case3ChildId) o;
+      return this.sequence == that.sequence &&
+                 this.root.equals(that.root);
+    }
+
+    @Override
+    public int hashCode() {
+      return Objects.hash(this.root, this.sequence);
+    }
+
+    @Override
+    public String toString() {
+      return format("(%s, %d)", this.root, this.sequence);
+    }
+  }
+
   @EmbeddedId
-  @AttributeOverrides({
-      @AttributeOverride(name = "root", column = @Column(name = "root", nullable = false, updatable = false)),
-      @AttributeOverride(name = "sequence", column = @Column(name = "seq", nullable = false, updatable = false))
-  })
   private Case3ChildId id;
   @ManyToOne
   @JoinColumn(name = "root", nullable = false, insertable = false, updatable = false,
