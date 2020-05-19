@@ -63,6 +63,6 @@ public class Case1Root {
 
   @Override
   public String toString() {
-    return format("%s(id=%d, createdAt=%s)", Case1Root.class.getSimpleName(), this.id, this.createdAt);
+    return format("%s{id=%d, createdAt=%s}", Case1Root.class.getSimpleName(), this.id, this.createdAt);
   }
 }

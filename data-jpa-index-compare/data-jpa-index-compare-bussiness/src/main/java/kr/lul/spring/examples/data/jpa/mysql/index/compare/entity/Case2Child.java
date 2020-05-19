@@ -12,7 +12,7 @@ import static java.lang.String.format;
  */
 @Entity(name = "Case2Child")
 @Table(name = "case2_child",
-    indexes = @Index(name = "idx_case2_child", columnList = "root ASC, seq ASC"))
+    uniqueConstraints = @UniqueConstraint(name = "idx_case2_child", columnNames = {"root", "seq"}))
 public class Case2Child {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -71,7 +71,7 @@ public class Case2Child {
 
   @Override
   public String toString() {
-    return format("%s(id=%d, root=%d, sequence=%d, createdAt=%s)",
+    return format("%s{id=%d, root=%d, sequence=%d, createdAt=%s}",
         Case2Child.class.getSimpleName(), this.id, this.root.getId(), this.sequence, this.createdAt);
   }
 }

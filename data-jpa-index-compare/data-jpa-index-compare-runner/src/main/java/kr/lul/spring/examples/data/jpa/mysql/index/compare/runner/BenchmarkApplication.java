@@ -3,6 +3,7 @@ package kr.lul.spring.examples.data.jpa.mysql.index.compare.runner;
 import kr.lul.spring.examples.data.jpa.mysql.index.compare.DataJpaIndexCompareAnchor;
 import kr.lul.spring.examples.data.jpa.mysql.index.compare.service.Case1Service;
 import kr.lul.spring.examples.data.jpa.mysql.index.compare.service.Case2Service;
+import kr.lul.spring.examples.data.jpa.mysql.index.compare.service.Case3Service;
 import kr.lul.spring.examples.data.jpa.mysql.index.compare.service.CreateResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +32,8 @@ public class BenchmarkApplication implements ApplicationRunner {
   private Case1Service case1Service;
   @Autowired
   private Case2Service case2Service;
+  @Autowired
+  private Case3Service case3Service;
 
   private long longArgument(String name, ApplicationArguments args) {
     List<String> values = args.getOptionValues(name);
@@ -52,7 +55,8 @@ public class BenchmarkApplication implements ApplicationRunner {
 
     List<CreateResult> results = List.of(
         this.case1Service.create(size, childSize),
-        this.case2Service.create(size, childSize));
+        this.case2Service.create(size, childSize),
+        this.case3Service.create(size, childSize));
     log.info("#run results={}", results);
   }
 

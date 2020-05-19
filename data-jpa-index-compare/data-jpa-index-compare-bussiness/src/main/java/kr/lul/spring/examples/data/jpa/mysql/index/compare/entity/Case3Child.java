@@ -9,27 +9,27 @@ import static java.lang.String.format;
 
 /**
  * @author justburrow
- * @since 2020/05/17
+ * @since 2020/05/19
  */
-@Entity(name = "Case1Child")
-@Table(name = "case1_child")
-public class Case1Child {
+@Entity(name = "Case3Child")
+@Table(name = "case3_child")
+public class Case3Child {
   @Embeddable
-  public static class Case1ChildId implements Serializable {
+  public static class Case3ChildId implements Serializable {
     @Column(name = "root", nullable = false, updatable = false)
-    private long root;
+    private String root;
     @Column(name = "seq", nullable = false, updatable = false)
     private int sequence;
 
-    public Case1ChildId() {
+    public Case3ChildId() {
     }
 
-    public Case1ChildId(long root, int sequence) {
+    public Case3ChildId(String root, int sequence) {
       this.root = root;
       this.sequence = sequence;
     }
 
-    public long root() {
+    public String root() {
       return this.root;
     }
 
@@ -41,9 +41,9 @@ public class Case1Child {
     public boolean equals(Object o) {
       if (this == o) return true;
       if (o == null || getClass() != o.getClass()) return false;
-      Case1ChildId that = (Case1ChildId) o;
-      return this.root == that.root &&
-                 this.sequence == that.sequence;
+      Case3ChildId that = (Case3ChildId) o;
+      return this.sequence == that.sequence &&
+                 this.root.equals(that.root);
     }
 
     @Override
@@ -53,46 +53,42 @@ public class Case1Child {
 
     @Override
     public String toString() {
-      return format("(%d, %d)", this.root, this.sequence);
+      return format("(%s, %d)", this.root, this.sequence);
     }
   }
 
   @EmbeddedId
-  private Case1ChildId id;
-  @ManyToOne(targetEntity = Case1Root.class)
-  @JoinColumn(name = "root",
-      nullable = false,
-      insertable = false,
-      updatable = false,
-      foreignKey = @ForeignKey(name = "fk_case1_child_pk_case1_root"),
-      referencedColumnName = "id")
+  private Case3ChildId id;
+  @ManyToOne
+  @JoinColumn(name = "root", nullable = false, insertable = false, updatable = false,
+      foreignKey = @ForeignKey(name = "fk_case3_child_pk_case3_root"), referencedColumnName = "id")
   @MapsId("root")
-  private Case1Root root;
+  private Case3Root root;
   @Column(name = "seq", nullable = false, insertable = false, updatable = false)
-  @MapsId("getSequence")
+  @MapsId("sequence")
   private int sequence;
   @Column(name = "created_at", nullable = false, updatable = false)
   private Instant createdAt;
 
-  public Case1Child() {
+  public Case3Child() {
   }
 
-  public Case1Child(Case1Root root, int sequence) {
+  public Case3Child(Case3Root root, int sequence) {
+    this.id = new Case3ChildId(root.getId(), sequence);
     this.root = root;
     this.sequence = sequence;
   }
 
   @PrePersist
   private void prePersist() {
-    this.id = new Case1ChildId(this.root.getId(), this.sequence);
     this.createdAt = Instant.ofEpochMilli(System.currentTimeMillis());
   }
 
-  public Case1ChildId getId() {
+  public Case3ChildId getId() {
     return this.id;
   }
 
-  public Case1Root getRoot() {
+  public Case3Root getRoot() {
     return this.root;
   }
 
@@ -107,8 +103,8 @@ public class Case1Child {
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
-    if (this.id == null || o == null || getClass() != o.getClass()) return false;
-    return this.id.equals(((Case1Child) o).id);
+    if (o == null || getClass() != o.getClass()) return false;
+    return this.id.equals(((Case3Child) o).id);
   }
 
   @Override
@@ -118,7 +114,11 @@ public class Case1Child {
 
   @Override
   public String toString() {
-    return format("%s{id=%s, root=%d, sequence=%d, createdAt=%s}",
-        Case1Child.class.getSimpleName(), this.id, this.root.getId(), this.sequence, this.createdAt);
+    return new StringBuilder(Case3Child.class.getSimpleName())
+               .append("{id=").append(this.id)
+               .append(", root=").append(this.root.getId())
+               .append(", sequence=").append(this.sequence)
+               .append(", createdAt=").append(this.createdAt)
+               .append('}').toString();
   }
 }

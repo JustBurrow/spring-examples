@@ -7,26 +7,33 @@ import java.util.List;
 import java.util.Objects;
 
 import static java.lang.String.format;
+import static kr.lul.common.util.Arguments.notEmpty;
 
 /**
  * @author justburrow
- * @since 2020/05/17
+ * @since 2020/05/19
  */
-@Entity(name = "Case2Root")
-@Table(name = "case2_root")
-public class Case2Root {
+@Entity(name = "Case3Root")
+@Table(name = "case3_root")
+public class Case3Root {
+  public static final int ID_LENGTH = 10;
+
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id", nullable = false, unique = true, insertable = false, updatable = false)
-  private long id;
+  @Column(name = "id", nullable = false, unique = true, updatable = false)
+  private String id;
   @Column(name = "created_at", nullable = false, updatable = false)
   private Instant createdAt;
 
-  @OneToMany(targetEntity = Case2Child.class, mappedBy = "root", orphanRemoval = true, cascade = CascadeType.PERSIST)
+  @OneToMany(mappedBy = "root", cascade = CascadeType.PERSIST)
   @OrderBy("sequence ASC")
-  private List<Case2Child> children = new ArrayList<>();
+  private List<Case3Child> children = new ArrayList<>();
 
-  public Case2Root() {
+  public Case3Root() {
+  }
+
+  public Case3Root(String id) {
+    notEmpty(id, "id");
+    this.id = id;
   }
 
   @PrePersist
@@ -34,7 +41,7 @@ public class Case2Root {
     this.createdAt = Instant.ofEpochMilli(System.currentTimeMillis());
   }
 
-  public long getId() {
+  public String getId() {
     return this.id;
   }
 
@@ -42,18 +49,22 @@ public class Case2Root {
     return this.createdAt;
   }
 
-  public Case2Child add() {
-    Case2Child child = new Case2Child(this, this.children.size());
+  public Case3Child add() {
+    Case3Child child = new Case3Child(this, this.children.size());
     this.children.add(child);
     return child;
+  }
+
+  public List<Case3Child> getChildren() {
+    return this.children;
   }
 
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
-    Case2Root that = (Case2Root) o;
-    return this.id == that.id;
+    Case3Root case3Root = (Case3Root) o;
+    return this.id.equals(case3Root.id);
   }
 
   @Override
@@ -63,7 +74,7 @@ public class Case2Root {
 
   @Override
   public String toString() {
-    return format("%s{id=%d, children.size=%d, createdAt=%s}",
-        Case2Root.class.getSimpleName(), this.id, this.children.size(), this.createdAt);
+    return format("%s{id=%s, children.size=%d, createdAt=%s}",
+        Case3Root.class.getSimpleName(), this.id, this.children.size(), this.createdAt);
   }
 }
